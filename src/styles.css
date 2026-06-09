@@ -1,0 +1,189 @@
+:root {
+  --bg: #f4f1ea;
+  --ink: #1c1c1c;
+  --box-border: #2a2a2a;
+  --tab-bg: #2a2a2a;
+  --tab-ink: #f4f1ea;
+  --data-accent: #1f6f43;
+  --doit-accent: #314b9c;
+  --graphics-accent: #8a4b1f;
+  --chrome: #d9d4c8;
+  --select: #b8d0ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "SF Mono", "Menlo", "Consolas", ui-monospace, monospace;
+  font-size: 14px;
+}
+
+/* ---- toolbar ---- */
+#toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--chrome);
+  border-bottom: 2px solid var(--box-border);
+  flex-wrap: wrap;
+}
+#toolbar .brand { font-weight: 700; letter-spacing: 0.5px; }
+#toolbar .tools { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+#toolbar .sep { width: 1px; height: 18px; background: #999; margin: 0 4px; }
+#toolbar button {
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 8px;
+  border: 1px solid var(--box-border);
+  background: var(--bg);
+  cursor: pointer;
+  border-radius: 3px;
+}
+#toolbar button:hover { background: #fff; }
+#toolbar .hint { margin-left: auto; font-size: 11px; color: #666; }
+
+#world { padding: 16px; }
+
+#status {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 3px 12px;
+  font-size: 11px;
+  color: #555;
+  background: var(--chrome);
+  border-top: 1px solid #bbb;
+  min-height: 18px;
+  white-space: pre-wrap;
+}
+#status.error { color: #a11; background: #fdd; }
+
+/* ---- boxes ---- */
+.box {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: top;
+  margin: 1px 2px;
+  border: 1.5px solid var(--box-border);
+  border-radius: 2px;
+  background: #fff;
+  position: relative;
+  max-width: 100%;
+}
+.box[data-kind="data"] { border-color: var(--data-accent); }
+.box[data-kind="doit"] { border-color: var(--doit-accent); }
+.box[data-kind="graphics"] { border-color: var(--graphics-accent); }
+
+/* the root box fills the work area as a block */
+#world > .box { display: flex; width: 100%; }
+
+.box-tab {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tab-ink);
+  background: var(--tab-bg);
+  padding: 1px 7px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 2px 2px 0 0;
+  min-width: 1ch;
+  outline: none;
+}
+.box[data-kind="data"] > .box-tab { background: var(--data-accent); }
+.box[data-kind="doit"] > .box-tab { background: var(--doit-accent); }
+.box[data-kind="graphics"] > .box-tab { background: var(--graphics-accent); }
+
+.box-content {
+  padding: 3px 6px;
+  outline: none;
+  min-width: 1.5ch;
+  min-height: 1.4em;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* control strip, shown on hover/focus-within */
+.box-controls {
+  position: absolute;
+  top: -11px;
+  right: 4px;
+  display: none;
+  gap: 2px;
+  z-index: 10;
+  user-select: none;
+}
+.box:hover > .box-controls,
+.box:focus-within > .box-controls { display: flex; }
+.box-controls button {
+  font: inherit;
+  font-size: 10px;
+  line-height: 1;
+  padding: 2px 4px;
+  border: 1px solid var(--box-border);
+  background: var(--chrome);
+  cursor: pointer;
+  border-radius: 2px;
+}
+.box-controls button:hover { background: #fff; }
+
+/* corner kind badge */
+.box-badge {
+  position: absolute;
+  bottom: 1px;
+  right: 3px;
+  font-size: 9px;
+  color: #999;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- shrunken ---- */
+.box[data-display="shrunken"] { vertical-align: middle; }
+.box[data-display="shrunken"] > .box-content,
+.box[data-display="shrunken"] > .box-badge { display: none; }
+.box[data-display="shrunken"] > .box-tab { margin: 0; border-radius: 2px; }
+.box[data-display="shrunken"]:not(:has(> .box-tab))::after {
+  content: "▥";
+  display: block;
+  padding: 0 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* ---- fullscreen ---- */
+.box[data-display="fullscreen"] {
+  position: fixed;
+  inset: 34px 0 20px 0;
+  margin: 0;
+  width: auto;
+  max-width: none;
+  z-index: 40;
+  display: flex;
+  box-shadow: 0 0 0 2000px rgba(0,0,0,0.25);
+  overflow: auto;
+}
+.box[data-display="fullscreen"] > .box-content { flex: 1; }
+
+/* ---- graphics ---- */
+.box[data-kind="graphics"] > .box-content {
+  padding: 0;
+  display: block;
+}
+.box-canvas {
+  display: block;
+  background: #fffdf7;
+  cursor: crosshair;
+}
+
+/* a freshly inserted box gets a brief highlight */
+@keyframes pop { from { background: var(--select); } to { background: #fff; } }
+.box.just-made { animation: pop 0.5s ease-out; }

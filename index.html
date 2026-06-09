@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contender</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <header id="toolbar">
+      <span class="brand">Contender</span>
+      <span class="tools">
+        <button data-cmd="new-data" title="Insert a data box (literal; named = variable)">+ data</button>
+        <button data-cmd="new-doit" title="Insert a doit box (evaluable program)">+ doit</button>
+        <button data-cmd="new-graphics" title="Insert a graphics box (turtle field)">+ graphics</button>
+        <span class="sep"></span>
+        <button data-cmd="run" title="Run the doit box at the cursor (Cmd/Ctrl+Enter)">▷ run</button>
+        <span class="sep"></span>
+        <button data-cmd="save" title="Save the world to local storage">save</button>
+        <button data-cmd="load" title="Reload the saved world">load</button>
+        <button data-cmd="export" title="Download the world as JSON">export</button>
+        <button data-cmd="reset" title="Clear and start fresh">reset</button>
+      </span>
+      <span class="hint">Cmd/Ctrl+Enter run · Cmd/Ctrl+B nest box · Esc leave box</span>
+    </header>
+    <main id="world"><!-- the top-level box is mounted here --></main>
+    <div id="status"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

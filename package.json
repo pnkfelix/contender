@@ -1,0 +1,16 @@
+{
+  "name": "contender",
+  "version": "0.1.0",
+  "description": "A web-based reconstructible computational medium, in the spirit of Boxer.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0"
+  }
+}
